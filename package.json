@@ -1,0 +1,31 @@
+{
+  "name": "tlx_ruta",
+  "version": "1.0.0",
+  "main": "borrar.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoisesBretonC/tlx_ruta.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MoisesBretonC/tlx_ruta/issues"
+  },
+  "homepage": "https://github.com/MoisesBretonC/tlx_ruta#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.13.1",
+    "mongoose": "^8.10.2",
+    "mongose": "^0.0.2-security",
+    "nodemon": "^3.1.9"
+  }
+}
