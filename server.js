@@ -41,6 +41,10 @@ app.get('/registro', (req, res) => {
 app.get('/bienvenido', (req, res) => {
     res.sendFile(path.join(path.resolve(), 'public', 'bienvenido', 'bienvenido.html')); // Cambia aquí
 });
+//welcome
+app.get('/', (req, res) => {
+    res.sendFile(path.join(path.resolve(), 'public', 'home', 'home.html')); // Cambia aquí
+});
 
 // Iniciar el servidor
 app.listen(PORT, () => {
