@@ -1,1 +1,1 @@
-echo "# Mi primer repositorio" > README.md
+echo "# Mi  sprimer repositorio" > README.mdgit 
