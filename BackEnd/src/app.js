@@ -1,7 +1,11 @@
 import express from 'express'
+import morgan from 'morgan';
+import authRoutes from './routes/authRoutes.js';
 
-const app = express()
+const app = express();
 
-app.listen(3002)
+app.use(morgan('dev'));
 
-console.log("EL servidor esta corriendo en el puerto ", 3002)
+app.use('/api',authRoutes);
+
+export default app;

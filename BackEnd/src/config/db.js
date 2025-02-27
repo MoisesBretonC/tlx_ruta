@@ -3,17 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const connectDB = async () => {
+const MONGODB_URI = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.y0avv.mongodb.net/${process.env.NAME}?retryWrites=true&w=majority;`
+
+export const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("🟢 Conectado a MongoDB Atlas");
+        await mongoose.connect(MONGODB_URI)
+        console.log("Conectado a la Base de Datos");
     } catch (error) {
-        console.error("🔴 Error conectando a MongoDB:", error);
-        process.exit(1);
+        console.error(error);
     }
 };
 
-export default connectDB;
