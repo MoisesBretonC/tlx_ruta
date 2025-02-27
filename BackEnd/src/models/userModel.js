@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
-import { unique } from 'next/dist/build/utils';
 
-
-mongoose.Schema({
+const userSchema = new mongoose.Schema({
     userName:{
         type: String,
         required: true,
@@ -17,7 +15,9 @@ mongoose.Schema({
     password: {
         type: String,
         required: true,
-    },
+    }
+},{
+    timestamps:true
 })
 
 export default mongoose.model('User', userSchema)
