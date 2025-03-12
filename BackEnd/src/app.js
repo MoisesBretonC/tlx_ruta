@@ -1,11 +1,17 @@
 import express from 'express'
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import authRoutes from './routes/authRoutes.js';
 import tasksRoutes from './routes/tasksRoutes.js';
-import cookieParser from 'cookie-parser'
 
 const app = express();
 
+//Permitir que todos los dominios se comuniquen entre si es decir, comunicar el backcon el front
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 // Middlewares
 app.use(morgan('dev'));
 // ProcesarLosDatos para que se conviertan en json
