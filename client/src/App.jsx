@@ -9,7 +9,6 @@ import HomePage from './pages/HomePage';
 import ProtectedRoute from './ProtectedRoute';
 
 
-
 function App(){
   return(
     <AuthProvider>
@@ -19,8 +18,9 @@ function App(){
         <Route path='/' element={<HomePage/>}></Route>
         <Route path='/login' element={<LoginPage/>}></Route>
         <Route path='/register' element={<RegisterPage />}></Route>
+        <Route element={<ProtectedRoute/>}>
 
-       <Route element={<ProtectedRoute/>}>
+        
          {/* Rutas Privadas (Es decir no deberian funcionar a menos que el Usuario este autenticado) */}
          <Route path='/tasks' element={<TasksPage/>}></Route>
         <Route path='/add-task' element={<TasksFromPage/>}></Route>
