@@ -18,12 +18,34 @@ export const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Función para registrar usuario (signup)
+  const signup = async (userData) => {
+    try {
+      const res = await registerRequest(userData);
+      console.log("Register Response:", res.data);
+
+      setUser(res.data.user);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error("Error en signup:", error);
+
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrors([error.response.data.message]);
+      } else {
+        setErrors(["Error desconocido"]);
+      }
+
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  };
+
   // Función para hacer login
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
       console.log("Login Response:", res.data);
-  
+
       if (res.data.token) {
         setIsAuthenticated(true);
         setUser(res.data.user);
@@ -35,14 +57,13 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error en signin:", error);
-  
-      // Si el error contiene una respuesta y el mensaje, lo mostramos
+
       if (error.response && error.response.data && error.response.data.message) {
-        setErrors([error.response.data.message]); // Mostrar mensaje de error específico
+        setErrors([error.response.data.message]);
       } else {
-        setErrors(["Error desconocido"]); // Mostrar error genérico si no hay mensaje específico
+        setErrors(["Error desconocido"]);
       }
-  
+
       setIsAuthenticated(false);
       setUser(null);
     }
@@ -50,13 +71,9 @@ export const AuthProvider = ({ children }) => {
 
   // Función para cerrar sesión
   const signout = () => {
-    // Eliminar el token de localStorage
     localStorage.removeItem("token");
-
-    // Actualizar el estado
     setIsAuthenticated(false);
     setUser(null);
-
     console.log("Sesión cerrada correctamente.");
   };
 
@@ -67,14 +84,15 @@ export const AuthProvider = ({ children }) => {
     } else {
       setIsAuthenticated(false);
     }
-    setLoading(false); // Siempre actualizamos `loading`
+    setLoading(false);
   }, []);
 
   return (
     <AuthContext.Provider
       value={{
+        signup,  // 🔥 Agregado signup aquí
         signin,
-        signout,  // Agregar signout al valor del contexto
+        signout,
         loading,
         user,
         isAuthenticated,
@@ -85,4 +103,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
