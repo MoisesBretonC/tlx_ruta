@@ -44,34 +44,37 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   
   try {
-
-    const userFound = await User.findOne({email});
-    if(!userFound) return res.status(400).json({message: "User not found"});
+    const userFound = await User.findOne({ email });
+    if (!userFound) return res.status(400).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, userFound.password);
-    
-    if(!isMatch) return res.status(400).json({message: "Incorrect password"});
-    // token atravez de otra funcion
-    const token = await createAccessToken({id: userFound._id});
+    if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
 
-// aqui debe estar el 
+    // 🔹 Generar el token
+    const token = await createAccessToken({ id: userFound._id });
 
-
-    res.cookie("token", token,{
-      sameSite: 'none',
+    // 🔹 Guardar el token como cookie
+    res.cookie("token", token, {
+      sameSite: "none",
       secure: true,
       httpOnly: true
-    })
+    });
+
+    // 🔹 Incluir el token en la respuesta JSON
     res.json({
-      id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
-      createdAt: userFound.createdAt,
-      updatedAt: userFound.updatedAt,
-    }); 
+      token,  // <-- Aquí lo agregamos
+      user: {
+        id: userFound._id,
+        username: userFound.username,
+        email: userFound.email,
+        createdAt: userFound.createdAt,
+        updatedAt: userFound.updatedAt
+      }
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
-  } 
+  }
 };
 
 

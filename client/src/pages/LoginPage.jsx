@@ -8,23 +8,21 @@ function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const {signin, errors: signinErrors} = useAuth()
+  const { signin, errors: signinErrors } = useAuth();
 
   const onSubmit = handleSubmit((data) => {
-    signin(data)
-    
+    signin(data);
   });
+
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center">
       <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
-        {
-        signinErrors.map((error, i)=>(
-        <div className="bg-red-500 p-2 text-white text-center" key={i}>
+        {signinErrors.map((error, i) => (
+          <div className="bg-red-500 p-2 text-white text-center" key={i}>
             {error}
-            </div>
-            ))
-        }
-        <h1 className="text-2xl font-bold">login</h1>
+          </div>
+        ))}
+        <h1 className="text-2xl font-bold">Login</h1>
 
         <form onSubmit={onSubmit}>
           <input
@@ -48,11 +46,14 @@ function LoginPage() {
           <button type="submit">Login</button>
         </form>
         <p className="flex gap-x-2 justify-between">
-          Don't have an account? <Link to="/register" 
-          className="text-sky-500">Sign up</Link>
+          Don't have an account?{" "}
+          <Link to="/register" className="text-sky-500">
+            Sign up
+          </Link>
         </p>
       </div>
     </div>
   );
 }
+
 export default LoginPage;

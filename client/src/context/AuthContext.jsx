@@ -1,8 +1,8 @@
-import { createContext, useState, useContext, useEffect, use } from "react";
-import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
+import { createContext, useState, useContext, useEffect } from "react";
+import { registerRequest, loginRequest } from "../api/auth";
 import Cookie from "js-cookie";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -18,79 +18,63 @@ export const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const signup = async (user) => {
-    try {
-      const res = await registerRequest(user);
-      console.log(res.data);
-      setUser(res.data);
-      setIsAuthenticated(true);
-    } catch (error) {
-      setErrors(error.response.data);
-    }
-  };
-
+  // Función para hacer login
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
-      console.log(res);
-      setIsAuthenticated(true);
-      setUser(res.data);
-    } catch (error) {
-      if (Array.isArray(error.response.data)) {
-        return setErrors(error.response.data);
+      console.log("Login Response:", res.data);
+  
+      if (res.data.token) {
+        setIsAuthenticated(true);
+        setUser(res.data.user);
+        localStorage.setItem("token", res.data.token);
+        console.log("Token guardado en localStorage");
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
       }
-      setErrors([error.response.data.message]);
+    } catch (error) {
+      console.error("Error en signin:", error);
+  
+      // Si el error contiene una respuesta y el mensaje, lo mostramos
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrors([error.response.data.message]); // Mostrar mensaje de error específico
+      } else {
+        setErrors(["Error desconocido"]); // Mostrar error genérico si no hay mensaje específico
+      }
+  
+      setIsAuthenticated(false);
+      setUser(null);
     }
   };
 
+  // Función para cerrar sesión
+  const signout = () => {
+    // Eliminar el token de localStorage
+    localStorage.removeItem("token");
+
+    // Actualizar el estado
+    setIsAuthenticated(false);
+    setUser(null);
+
+    console.log("Sesión cerrada correctamente.");
+  };
+
   useEffect(() => {
-    if (errors.length > 0) {
-      const timer = setTimeout(() => {
-        setErrors([]);
-      }, 5000);
-      return () => clearTimeout(timer);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
     }
-  }, [errors]);
-
-  useEffect(() => {
-    async function checkLogin() {
-      const cookies = Cookie.get();
-      console.log("Las cookies disponibles son: " , cookies);
-
-      if (!cookies.token) {
-        setIsAuthenticated(false);
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-
-        try {
-          const res =  await verifyTokenRequest();
-          console.log("Respuesta del VerifyToken:", res.data)
-
-          if (!res.data) {
-            setIsAuthenticated(false);
-            setUser(null);
-          } else {
-            setIsAuthenticated(true);
-            setUser(res.data);
-          }
-        } catch (error) {
-          console.log("Error en verifyToken:", error);
-          setIsAuthenticated(false);
-          setUser(null);
-        }
-    
-        setLoading(false);  // <-- Aseguramos que `loading` se actualiza siempre
-      }
-      checkLogin();
-    }, []);
+    setLoading(false); // Siempre actualizamos `loading`
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        signup,
         signin,
+        signout,  // Agregar signout al valor del contexto
         loading,
         user,
         isAuthenticated,
@@ -101,3 +85,4 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
