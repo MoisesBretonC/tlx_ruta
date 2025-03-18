@@ -18,23 +18,26 @@ export const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Función para registrar usuario (signup)
+  // Función para registrar usuario
   const signup = async (userData) => {
     try {
       const res = await registerRequest(userData);
       console.log("Register Response:", res.data);
 
-      setUser(res.data.user);
+      setUser({
+        id: res.data.id,
+        NombreUsuario: res.data.NombreUsuario,
+        correo: res.data.correo,
+        nombre: res.data.nombre,
+        apellidoP: res.data.apellidoP,
+        apellidoM: res.data.apellidoM,
+        celular: res.data.celular,
+      });
+
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Error en signup:", error);
-
-      if (error.response && error.response.data && error.response.data.message) {
-        setErrors([error.response.data.message]);
-      } else {
-        setErrors(["Error desconocido"]);
-      }
-
+      setErrors(error.response?.data?.message ? [error.response.data.message] : ["Error desconocido"]);
       setIsAuthenticated(false);
       setUser(null);
     }
@@ -48,7 +51,15 @@ export const AuthProvider = ({ children }) => {
 
       if (res.data.token) {
         setIsAuthenticated(true);
-        setUser(res.data.user);
+        setUser({
+          id: res.data.user.id,
+          NombreUsuario: res.data.user.NombreUsuario,
+          correo: res.data.user.correo,
+          nombre: res.data.user.nombre,
+          apellidoP: res.data.user.apellidoP,
+          apellidoM: res.data.user.apellidoM,
+          celular: res.data.user.celular,
+        });
         localStorage.setItem("token", res.data.token);
         console.log("Token guardado en localStorage");
       } else {
@@ -57,13 +68,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error en signin:", error);
-
-      if (error.response && error.response.data && error.response.data.message) {
-        setErrors([error.response.data.message]);
-      } else {
-        setErrors(["Error desconocido"]);
-      }
-
+      setErrors(error.response?.data?.message ? [error.response.data.message] : ["Error desconocido"]);
       setIsAuthenticated(false);
       setUser(null);
     }
@@ -90,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        signup,  // 🔥 Agregado signup aquí
+        signup,
         signin,
         signout,
         loading,
