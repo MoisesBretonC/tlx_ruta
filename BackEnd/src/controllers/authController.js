@@ -39,7 +39,6 @@ export const register = async (req, res) => {
   } 
 };
 
-
 export const login = async (req, res) => {
   const { email, password } = req.body;
   
@@ -76,7 +75,6 @@ export const login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 export const logout = async (req, res) => {
   res.cookie("token", "", {
