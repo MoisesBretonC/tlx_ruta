@@ -1,46 +1,43 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  NombreUsuario: z.string({
+  username: z.string({
     required_error: "Username is required",
   }),
-  correo: z
+  email: z
     .string({
       required_error: "Email is required",
     })
     .email({
       message: "Email is not valid",
     }),
-  contraseña: z
+  password: z
     .string({
       required_error: "Password is required",
     })
     .min(6, {
       message: "Password must be at least 6 characters",
     }),
-  nombre: z.string({
-    required_error: "First name is required",
-  }),
-  apellidoP: z.string({
-    required_error: "Last name (paternal) is required",
-  }),
-  apellidoM: z.string({
-    required_error: "Last name (maternal) is required",
-  }),
-  celular: z.string({
-    required_error: "Phone number is required",
-  }),
+    firstName: z.string({
+      required_error: "First name is required",
+    }),
+    lastName: z.string({
+      required_error: "Last name is required",
+    }),
+    phone: z.string({
+      required_error: "Phone is required",
+    }),
 });
 
 export const loginSchema = z.object({
-  correo: z
+  email: z
     .string({
       required_error: "Email is required",
     })
     .email({
       message: "Email is not valid",
     }),
-  contraseña: z
+  password: z
     .string({
       required_error: "Password is required",
     })

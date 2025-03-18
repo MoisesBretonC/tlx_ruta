@@ -30,15 +30,15 @@ function LoginPage() {
         <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
 
         <form onSubmit={onSubmit}>
-          {/* Input de usuario (email o NombreUsuario según backend) */}
+          {/* Input de correo electrónico */}
           <input
             type="text"
-            {...register("NombreUsuario", { required: true })}
+            {...register("email", { required: true })} // Cambié NombreUsuario por email
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-            placeholder="Username"
-            aria-invalid={errors.NombreUsuario ? "true" : "false"}
+            placeholder="Email"
+            aria-invalid={errors.email ? "true" : "false"}
           />
-          {errors.NombreUsuario && <p className="text-red-500">Username is required</p>}
+          {errors.email && <p className="text-red-500">Email is required</p>}
 
           {/* Input de contraseña */}
           <input
@@ -50,7 +50,7 @@ function LoginPage() {
           />
           {errors.password && <p className="text-red-500">Password is required</p>}
 
-          {/* Botón de login con estilos */}
+          {/* Botón de login */}
           <button 
             type="submit" 
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md my-2"
