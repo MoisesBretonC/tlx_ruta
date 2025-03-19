@@ -18,30 +18,32 @@ export const AuthProvider = ({ children }) => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Función para registrar usuario
   const signup = async (userData) => {
+    if (!userData.username) {
+      console.log("El campo 'username' es obligatorio y no puede estar vacío");
+      return; // No enviar la solicitud si username está vacío
+    }
+  
+    const formattedData = {
+      NombreUsuario: userData.username,
+      correo: userData.email,
+      contraseña: userData.password,
+      nombre: userData.nombre,
+      apellidoP: userData.apellidoP,
+      apellidoM: userData.apellidoM,
+      celular: userData.celular,
+    };
+  
     try {
-      const res = await registerRequest(userData);
+      const res = await registerRequest(formattedData);
       console.log("Register Response:", res.data);
-
-      setUser({
-        id: res.data.id,
-        NombreUsuario: res.data.NombreUsuario,
-        correo: res.data.correo,
-        nombre: res.data.nombre,
-        apellidoP: res.data.apellidoP,
-        apellidoM: res.data.apellidoM,
-        celular: res.data.celular,
-      });
-
-      setIsAuthenticated(true);
     } catch (error) {
       console.error("Error en signup:", error);
-      setErrors(error.response?.data?.message ? [error.response.data.message] : ["Error desconocido"]);
-      setIsAuthenticated(false);
-      setUser(null);
+      console.log("Detalles del error:", error.response?.data);
     }
   };
+  
+  
 
   // Función para hacer login
   const signin = async (user) => {

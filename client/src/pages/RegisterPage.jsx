@@ -34,32 +34,65 @@ function RegisterPage() {
           {/* Username */}
           <input
             type="text"
-            {...register("username", { required: true })}
+            {...register("username", { required: "Username is required", minLength: { value: 3, message: "Minimum 3 characters" } })}
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
             placeholder="Username"
-            aria-invalid={errors.username ? "true" : "false"}
           />
-          {errors.username && <p className="text-red-500">Username is required</p>}
+          {errors.username && <p className="text-red-500">{errors.username.message}</p>}
 
           {/* Email */}
           <input
             type="email"
-            {...register("email", { required: true })}
+            {...register("email", { required: "Email is required", pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" } })}
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
             placeholder="Email"
-            aria-invalid={errors.email ? "true" : "false"}
           />
-          {errors.email && <p className="text-red-500">Email is required</p>}
+          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
           {/* Password */}
           <input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", { required: "Password is required", minLength: { value: 6, message: "Minimum 6 characters" } })}
             className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
             placeholder="Password"
-            aria-invalid={errors.password ? "true" : "false"}
           />
-          {errors.password && <p className="text-red-500">Password is required</p>}
+          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+
+          {/* Nombre */}
+          <input
+            type="text"
+            {...register("nombre", { required: "Nombre is required" })}
+            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+            placeholder="Nombre"
+          />
+          {errors.nombre && <p className="text-red-500">{errors.nombre.message}</p>}
+
+          {/* Apellido Paterno */}
+          <input
+            type="text"
+            {...register("apellidoP", { required: "Apellido Paterno is required" })}
+            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+            placeholder="Apellido Paterno"
+          />
+          {errors.apellidoP && <p className="text-red-500">{errors.apellidoP.message}</p>}
+
+          {/* Apellido Materno */}
+          <input
+            type="text"
+            {...register("apellidoM", { required: "Apellido Materno is required" })}
+            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+            placeholder="Apellido Materno"
+          />
+          {errors.apellidoM && <p className="text-red-500">{errors.apellidoM.message}</p>}
+
+          {/* Celular */}
+          <input
+            type="text"
+            {...register("celular", { required: "Celular is required", pattern: { value: /^[0-9]+$/, message: "Only numbers allowed" } })}
+            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+            placeholder="Celular"
+          />
+          {errors.celular && <p className="text-red-500">{errors.celular.message}</p>}
 
           {/* Botón de registro estilizado */}
           <button 
@@ -83,3 +116,4 @@ function RegisterPage() {
 }
 
 export default RegisterPage;
+
