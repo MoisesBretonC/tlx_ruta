@@ -1,16 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion"; // Importar animaciones
 
 function LoginPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const { signin, errors: signinErrors, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  
+  const [isExiting, setIsExiting] = useState(false); // Estado para animar salida
 
   const onSubmit = handleSubmit(async (data) => {
     await signin(data);
@@ -22,18 +21,50 @@ function LoginPage() {
     }
   }, [isAuthenticated, navigate]);
 
+  const handleSignUpClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      navigate("/register");
+    }, 500); // Esperar la animación antes de cambiar de ruta
+  };
+
   return (
-    <div className="flex h-screen">
+    <motion.div
+      className="flex h-screen"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: isExiting ? 0 : 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Contenedor del login */}
+<<<<<<< HEAD
       <div className="w-2/3 flex items-center justify-center p-10 ">
         <div className="bg-zinc-800 max-w-lg w-full p-16 rounded-md">
           <h1 className="text-3xl font-bold text-center mb-6">Login</h1>
+=======
+      <motion.div
+        className="w-1/2 flex items-center justify-center p-10"
+        initial={{ x: 0 }}
+        animate={{ x: isExiting ? -50 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
+          {signinErrors.length > 0 && (
+            <div className="bg-red-500 p-2 text-white text-center mb-4 rounded-md">
+              {signinErrors.map((error, i) => (
+                <p key={i}>{error}</p>
+              ))}
+            </div>
+          )}
+
+          <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
+>>>>>>> 1e7a2922ef5926ae092943aa41e2f3c9a1a427ad
 
           <form onSubmit={onSubmit}>
             <input
               type="text"
               {...register("email", { required: true })}
-              className="w-full bg-zinc-700 text-white px-4 py-3 rounded-md my-3"
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
               placeholder="Email"
             />
             {errors.email && <p className="text-red-500">Email is required</p>}
@@ -41,7 +72,7 @@ function LoginPage() {
             <input
               type="password"
               {...register("password", { required: true })}
-              className="w-full bg-zinc-700 text-white px-4 py-3 rounded-md my-3"
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
               placeholder="Password"
             />
             {errors.password && (
@@ -50,30 +81,39 @@ function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-md my-3"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md my-2"
             >
               Login
             </button>
           </form>
 
-          <p className="flex gap-x-2 justify-between mt-6 text-gray-400">
+          <p className="flex gap-x-2 justify-between mt-4 text-gray-400">
             Don't have an account?{" "}
-            <Link to="/register" className="text-sky-500 hover:underline">
+            <button onClick={handleSignUpClick} className="text-sky-500 hover:underline">
               Sign up
-            </Link>
+            </button>
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Imagen a la derecha */}
+<<<<<<< HEAD
       <div className="w-1/2 flex items-center justify-center mx-3">
+=======
+      <motion.div
+        className="w-1/2 flex items-center justify-center"
+        initial={{ x: 0 }}
+        animate={{ x: isExiting ? 50 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+>>>>>>> 1e7a2922ef5926ae092943aa41e2f3c9a1a427ad
         <img
           src="/img/login.jpeg"
           alt="Login Illustration"
-          className="w-80% h-80% object-cover"
+          className="w-full h-full object-cover"
         />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
