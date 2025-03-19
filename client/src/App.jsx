@@ -6,6 +6,7 @@ import TasksPage from './pages/TasksPage';
 import TasksFromPage from './pages/TasksFromPage';
 import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
+import WelcomePage from './pages/WelcomePage';
 import ProtectedRoute from './ProtectedRoute';
 
 
@@ -23,6 +24,7 @@ function App(){
         
          {/* Rutas Privadas (Es decir no deberian funcionar a menos que el Usuario este autenticado) */}
          <Route path='/tasks' element={<TasksPage/>}></Route>
+         <Route path='/welcome' element={<WelcomePage/>}></Route>
         <Route path='/add-task' element={<TasksFromPage/>}></Route>
         <Route path='/tasks/:id' element={<TasksFromPage/>}></Route>
         <Route path='/profile' element={<ProfilePage/>}></Route>
