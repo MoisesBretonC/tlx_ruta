@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { registerRequest,loginRequest } from "../api/auth";
-import Cookie from "js-cookie";
+import { registerRequest, loginRequest } from "../api/auth";
+
 
 const AuthContext = createContext();
 
@@ -20,23 +20,8 @@ export const AuthProvider = ({ children }) => {
 
   // Función para registrar usuario (signup)
   const signup = async (userData) => {
-    if (!userData.username) {
-      console.log("El campo 'username' es obligatorio y no puede estar vacío");
-      return; // No enviar la solicitud si username está vacío
-    }
-  
-    const formattedData = {
-      NombreUsuario: userData.username,
-      correo: userData.email,
-      contraseña: userData.password,
-      nombre: userData.nombre,
-      apellidoP: userData.apellidoP,
-      apellidoM: userData.apellidoM,
-      celular: userData.celular,
-    };
-  
     try {
-      const res = await registerRequest(formattedData);
+      const res = await registerRequest(userData);
       console.log("Register Response:", res.data);
 
       setUser(res.data.user);
@@ -54,8 +39,6 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     }
   };
-  
-  
 
   // Función para hacer login
   const signin = async (user) => {
