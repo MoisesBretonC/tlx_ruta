@@ -1,4 +1,4 @@
-import LogoutButton from "../components/LogoutButton"; // Importa el componente LogoutButton
+import LogoutButton from "../components/LogoutButton"; 
 
 function TasksPage() {
   return (

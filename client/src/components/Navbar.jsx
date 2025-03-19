@@ -39,10 +39,10 @@ const Navbar = () => {
                 Sobre Nosotros
             </Link>
             <button
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/login")}
                 className="px-6 py-3 bg-blue-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
             >
-                Registrarse
+                Iniciar Sesión
             </button>
         </nav>
     </header>
