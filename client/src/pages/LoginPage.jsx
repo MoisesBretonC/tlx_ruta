@@ -25,7 +25,7 @@ function LoginPage() {
   return (
     <div className="flex h-screen">
       {/* Contenedor del login */}
-      <div className="w-2/3 flex items-center justify-center p-10">
+      <div className="w-2/3 flex items-center justify-center p-10 ">
         <div className="bg-zinc-800 max-w-lg w-full p-16 rounded-md">
           <h1 className="text-3xl font-bold text-center mb-6">Login</h1>
 
@@ -66,7 +66,7 @@ function LoginPage() {
       </div>
 
       {/* Imagen a la derecha */}
-      <div className="w-1/2 flex items-center justify-center">
+      <div className="w-1/2 flex items-center justify-center mx-3">
         <img
           src="/img/login.jpeg"
           alt="Login Illustration"
