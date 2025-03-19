@@ -1,12 +1,15 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion"; // Importar animaciones
 
 function RegisterPage() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { signup, isAuthenticated, errors: registerErrors } = useAuth();
   const navigate = useNavigate();
+
+  const [isExiting, setIsExiting] = useState(false); // Estado para animar salida
 
   useEffect(() => {
     if (isAuthenticated) navigate('/login');
@@ -16,10 +19,42 @@ function RegisterPage() {
     signup(values);
   });
 
+  const handleLoginClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      navigate("/login");
+    }, 500); // Esperar la animación antes de cambiar de ruta
+  };
+
   return (
-    <div className="flex h-screen">
+    <motion.div
+      className="flex h-screen"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: isExiting ? 0 : 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Imagen a la izquierda */}
+      <motion.div
+        className="w-1/2 flex items-center justify-center"
+        initial={{ x: 0 }}
+        animate={{ x: isExiting ? -50 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <img
+          src="/img/login.jpeg"
+          alt="Register Illustration"
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
+
       {/* Contenedor del formulario de registro */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-10">
+      <motion.div
+        className="w-full md:w-1/2 flex items-center justify-center p-10"
+        initial={{ x: 0 }}
+        animate={{ x: isExiting ? 50 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
           {/* Mostrar errores de registro */}
           {registerErrors.length > 0 && (
@@ -92,22 +127,13 @@ function RegisterPage() {
 
           <p className="flex gap-x-2 justify-between mt-4 text-gray-400">
             Already have an account?{" "}
-            <Link to="/login" className="text-sky-500 hover:underline">
+            <button onClick={handleLoginClick} className="text-sky-500 hover:underline">
               Login
-            </Link>
+            </button>
           </p>
         </div>
-      </div>
-
-      {/* Imagen a la derecha */}
-      <div className="w-1/2 flex items-center justify-center">
-        <img
-          src="/img/login.jpeg"
-          alt="Register Illustration"
-          className="w-full h-full object-cover"
-        />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
