@@ -1,0 +1,54 @@
+.ocultar {
+    display: none;
+}
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    /* border: none; */
+    color: #000;
+    font-weight: bold;
+    padding: .5rem 2rem;
+    box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, 0.6);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.herramUser {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    position: relative;
+}
+.user, .bell {
+    cursor: pointer;
+    aspect-ratio: 1/1;
+    display: flex;
+    width: 2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+}
+.bellNoti {
+    position: absolute;
+    background: #fff;
+    box-shadow: 0rem 0.5rem 1rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    right: 100%;
+    width: 15rem;
+    font-weight: 400;
+    font-size: .8rem;
+}
+.bell {
+    transition: background 0.1s ease-in;
+}
+.user {
+    background: #000;
+    color: #fff;
+}
+.bell:hover {
+    background: #ccc;
+}

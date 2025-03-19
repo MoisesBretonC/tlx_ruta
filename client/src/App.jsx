@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
 import WelcomePage from './pages/WelcomePage';
 import ProtectedRoute from './ProtectedRoute';
+import "./fontawesome/css/all.css"
 
 
 function App(){
