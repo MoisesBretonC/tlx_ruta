@@ -1,94 +1,112 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
-import {useNavigate ,Link }from "react-router-dom";
-
+import { useNavigate, Link } from "react-router-dom";
 
 function RegisterPage() {
-  const { register, handleSubmit , formState :{errors}} = useForm();
-  const { signup, isAuthenticated, errors: registerErrors} = useAuth();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { signup, isAuthenticated, errors: registerErrors } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/login')
-  }, [isAuthenticated])
+    if (isAuthenticated) navigate('/login');
+  }, [isAuthenticated]);
 
-  const onSubmit = handleSubmit( async (values) => {
-    signup(values);    
-  })
+  const onSubmit = handleSubmit(async (values) => {
+    signup(values);
+  });
 
   return (
-    <div className="bg-zinc-800 max-w-md p-10 rounded-md">
-      {
-        registerErrors.map((error, i)=>(
-          <div className="bg-red-500 p-2 text-white>" key={i}>
-            {error}
-          </div>
-        ))
-      }
-      <form
-        onSubmit={onSubmit}>
-        <input
-          type="text"
-          {...register("username", { required: true })}
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-         placeholder="UserName"/>
-         {errors.username && (
-            <p className="text-red-500">Username is required</p>
-          )}
-        <input
-          type="email"
-          {...register("email", { required: true })}
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-         placeholder="Email"/>
-         {errors.email && (
-            <p className="text-red-500">Email is required</p>
+    <div className="flex h-screen">
+      {/* Contenedor del formulario de registro */}
+      <div className="w-full md:w-1/2 flex items-center justify-center p-10">
+        <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
+          {/* Mostrar errores de registro */}
+          {registerErrors.length > 0 && (
+            <div className="bg-red-500 p-2 text-white text-center mb-4 rounded-md">
+              {registerErrors.map((error, i) => (
+                <p key={i}>{error}</p>
+              ))}
+            </div>
           )}
 
-        <input
-          type="password"
-          {...register("password", { required: true })}
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-         placeholder="Password"/>
-         {errors.password && (
-            <p className="text-red-500">Password is required</p>
-          )}
-          
-          <input
-          type="text"
-          {...register("firstName", { required: true })}
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-         placeholder="firstName"/>
-         {errors.password && (
-            <p className="text-red-500">Password is required</p>
-          )}
-          
-          <input
-          type="text"
-          {...register("lastName", { required: true })}
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-         placeholder="lastName"/>
-         {errors.password && (
-            <p className="text-red-500">Password is required</p>
-          )}
-          
-        <input
-          type="text"
-          {...register("phone", { required: true })}
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-         placeholder="phone"/>
-         {errors.password && (
-            <p className="text-red-500">Password is required</p>
-          )}
+          <h1 className="text-2xl font-bold text-center mb-4">Register</h1>
 
+          {/* Formulario */}
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              {...register("username", { required: true })}
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              placeholder="UserName"
+            />
+            {errors.username && <p className="text-red-500">Username is required</p>}
 
+            <input
+              type="email"
+              {...register("email", { required: true })}
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              placeholder="Email"
+            />
+            {errors.email && <p className="text-red-500">Email is required</p>}
 
-        <button type="submit">Register</button>
-      </form>
-      <p className="flex gap-x-2 justify-between">
-          Already have a count? <Link to="/login" 
-          className="text-sky-500">Login</Link>
-        </p>
+            <input
+              type="password"
+              {...register("password", { required: true })}
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              placeholder="Password"
+            />
+            {errors.password && <p className="text-red-500">Password is required</p>}
+
+            <input
+              type="text"
+              {...register("firstName", { required: true })}
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              placeholder="First Name"
+            />
+            {errors.firstName && <p className="text-red-500">First name is required</p>}
+
+            <input
+              type="text"
+              {...register("lastName", { required: true })}
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              placeholder="Last Name"
+            />
+            {errors.lastName && <p className="text-red-500">Last name is required</p>}
+
+            <input
+              type="text"
+              {...register("phone", { required: true })}
+              className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+              placeholder="Phone"
+            />
+            {errors.phone && <p className="text-red-500">Phone is required</p>}
+
+            <button
+              type="submit"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md my-2"
+            >
+              Register
+            </button>
+          </form>
+
+          <p className="flex gap-x-2 justify-between mt-4 text-gray-400">
+            Already have an account?{" "}
+            <Link to="/login" className="text-sky-500 hover:underline">
+              Login
+            </Link>
+          </p>
+        </div>
+      </div>
+
+      {/* Imagen a la derecha */}
+      <div className="w-1/2 flex items-center justify-center">
+        <img
+          src="/img/login.jpeg"
+          alt="Register Illustration"
+          className="w-full h-full object-cover"
+        />
+      </div>
     </div>
   );
 }
