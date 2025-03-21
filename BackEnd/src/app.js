@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js';
 import tasksRoutes from './routes/tasksRoutes.js';
+import vehicleRoutes from './routes/vehicleRoutes.js';
 
 const app = express();
 
@@ -22,5 +23,11 @@ app.use(cookieParser());
 app.use('/api',authRoutes);
 
 app.use('/api', tasksRoutes);
+
+
+
+
+//Modulo de Las unidades o Vehiculos
+app.use('/api', vehicleRoutes);
 
 export default app;

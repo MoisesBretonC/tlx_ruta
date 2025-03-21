@@ -7,6 +7,7 @@ import TasksFromPage from './pages/TasksFromPage';
 import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
 import WelcomePage from './pages/WelcomePage';
+import Unidades from './pages/Unidades';
 import ProtectedRoute from './ProtectedRoute';
 
 
@@ -28,6 +29,9 @@ function App(){
         <Route path='/add-task' element={<TasksFromPage/>}></Route>
         <Route path='/tasks/:id' element={<TasksFromPage/>}></Route>
         <Route path='/profile' element={<ProfilePage/>}></Route>
+
+        {/* Esto es de tu Padrino el LUIS */}
+        <Route path='/unidades' element={<Unidades/>}></Route>
        </Route>
 
       </Routes>
