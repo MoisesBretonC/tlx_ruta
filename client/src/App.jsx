@@ -1,39 +1,45 @@
-import { BrowserRouter,Routes,Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
-import TasksPage from './pages/TasksPage';
-import TasksFromPage from './pages/TasksFromPage';
-import ProfilePage from './pages/ProfilePage';
-import HomePage from './pages/HomePage';
-import WelcomePage from './pages/WelcomePage';
+// App.js
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from './ProtectedRoute';
+import { RoleProtectedRoute } from "./components/RoleProtectedRoute";
+
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import AdminDashboard from "./pages/AdminDashboard";
+import ConcessionaireDashboard from "./pages/ConcessionaireDashboard";
+import OperatorDashboard from "./pages/OperatorDashboard";
+import Unauthorized from "./pages/Unauthorized";
+import HomePage from "./pages/HomePage";
 
 
-function App(){
-  return(
-    <AuthProvider>
-      <BrowserRouter>
+
+function App() {
+  return (
+    <BrowserRouter>
+    
       <Routes>
-        {/* Rutas Publicas */}
-        <Route path='/' element={<HomePage/>}></Route>
-        <Route path='/login' element={<LoginPage/>}></Route>
-        <Route path='/register' element={<RegisterPage />}></Route>
-        <Route element={<ProtectedRoute/>}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/home" element={<HomePage />}/>
 
-        
-         {/* Rutas Privadas (Es decir no deberian funcionar a menos que el Usuario este autenticado) */}
-         <Route path='/tasks' element={<TasksPage/>}></Route>
-         <Route path='/welcome' element={<WelcomePage/>}></Route>
-        <Route path='/add-task' element={<TasksFromPage/>}></Route>
-        <Route path='/tasks/:id' element={<TasksFromPage/>}></Route>
-        <Route path='/profile' element={<ProfilePage/>}></Route>
-       </Route>
+        {/* Rutas protegidas por rol */}
+        <Route element={<RoleProtectedRoute allowedRoles={['monitor']} />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Route>
 
+        <Route element={<RoleProtectedRoute allowedRoles={['concessionaire']} />}>
+          <Route path="/concessionaire" element={<ConcessionaireDashboard />} />
+        </Route>
+
+        <Route element={<RoleProtectedRoute allowedRoles={['operator']} />}>
+          <Route path="/operator" element={<OperatorDashboard />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
-    </AuthProvider>
-  )
+  );
 }
 
 export default App;

@@ -63,7 +63,7 @@ function RegisterPage() {
                 <p key={i}>{error}</p>
               ))}
             </div>
-          )}
+                  )}
 
           <h1 className="text-2xl font-bold text-center mb-4">Register</h1>
 

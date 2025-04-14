@@ -1,31 +1,50 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // Importar animaciones
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { signin, errors: signinErrors, isAuthenticated } = useAuth();
+  const { signin, isAuthenticated, user, errors: loginErrors } = useAuth();
   const navigate = useNavigate();
-  
-  const [isExiting, setIsExiting] = useState(false); // Estado para animar salida
+
+  const [isExiting, setIsExiting] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
-    await signin(data);
+    try {
+      await signin(data);
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/welcome");
+    if (isAuthenticated && user) {
+      setIsExiting(true);
+      setTimeout(() => {
+        switch(user.userType) {
+          case 'monitor':
+            navigate('/admin');
+            break;
+          case 'concessionaire':
+            navigate('/concessionaire');
+            break;
+          case 'operator':
+            navigate('/operator');
+            break;
+          default:
+            navigate('/home');
+        }
+      }, 500);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
-  const handleSignUpClick = () => {
+  const handleRegisterClick = () => {
     setIsExiting(true);
     setTimeout(() => {
       navigate("/register");
-    }, 500); // Esperar la animación antes de cambiar de ruta
+    }, 500);
   };
 
   return (
@@ -36,33 +55,29 @@ function LoginPage() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Contenedor del login */}
-<<<<<<< HEAD
-      <div className="w-2/3 flex items-center justify-center p-10 ">
-        <div className="bg-zinc-800 max-w-lg w-full p-16 rounded-md">
-          <h1 className="text-3xl font-bold text-center mb-6">Login</h1>
-=======
+      {/* Contenedor del formulario de login (ahora a la izquierda) */}
       <motion.div
-        className="w-1/2 flex items-center justify-center p-10"
+        className="w-full md:w-1/2 flex items-center justify-center p-10"
         initial={{ x: 0 }}
         animate={{ x: isExiting ? -50 : 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
-          {signinErrors.length > 0 && (
+          {/* Mostrar errores de login */}
+          {loginErrors.length > 0 && (
             <div className="bg-red-500 p-2 text-white text-center mb-4 rounded-md">
-              {signinErrors.map((error, i) => (
+              {loginErrors.map((error, i) => (
                 <p key={i}>{error}</p>
               ))}
             </div>
           )}
 
           <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
->>>>>>> 1e7a2922ef5926ae092943aa41e2f3c9a1a427ad
 
+          {/* Formulario */}
           <form onSubmit={onSubmit}>
             <input
-              type="text"
+              type="email"
               {...register("email", { required: true })}
               className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
               placeholder="Email"
@@ -75,9 +90,23 @@ function LoginPage() {
               className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
               placeholder="Password"
             />
-            {errors.password && (
-              <p className="text-red-500">Password is required</p>
-            )}
+            {errors.password && <p className="text-red-500">Password is required</p>}
+
+            <div className="flex items-center justify-between my-2">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 rounded"
+                />
+                <label htmlFor="remember-me" className="ml-2 text-sm text-gray-300">
+                  Remember me
+                </label>
+              </div>
+              <a href="#" className="text-sm text-sky-500 hover:underline">
+                Forgot password?
+              </a>
+            </div>
 
             <button
               type="submit"
@@ -89,24 +118,23 @@ function LoginPage() {
 
           <p className="flex gap-x-2 justify-between mt-4 text-gray-400">
             Don't have an account?{" "}
-            <button onClick={handleSignUpClick} className="text-sky-500 hover:underline">
-              Sign up
+            <button 
+              onClick={handleRegisterClick} 
+              className="text-sky-500 hover:underline"
+            >
+              Register
             </button>
           </p>
         </div>
       </motion.div>
 
       {/* Imagen a la derecha */}
-<<<<<<< HEAD
-      <div className="w-1/2 flex items-center justify-center mx-3">
-=======
       <motion.div
         className="w-1/2 flex items-center justify-center"
         initial={{ x: 0 }}
         animate={{ x: isExiting ? 50 : 0 }}
         transition={{ duration: 0.5 }}
       >
->>>>>>> 1e7a2922ef5926ae092943aa41e2f3c9a1a427ad
         <img
           src="/img/login.jpeg"
           alt="Login Illustration"

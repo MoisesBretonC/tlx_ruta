@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';  // Importa el módulo path
 import authRoutes from './src/routes/authRoutes.js';  // Importa las rutas
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 // Middleware
 app.use(express.json());
 app.use(express.static('public')); // Servir archivos estáticos desde la carpeta 'public'
+app.use(cookieParser());
 
 // Conectar a MongoDB
 mongoose.connect(MONGODB_URI, {

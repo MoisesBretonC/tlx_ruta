@@ -1,13 +1,14 @@
 import React from "react";
 import LogoutButton from "../components/LogoutButton";
 
-function WelcomePage() {
+ 
+  export default function WelcomePage() {
     return (
-        <div className="p-4">
-        <h1 className="text-2xl font-bold">Hola Polito</h1>
+      <div>
+        <h1>Bienvenido</h1>
         <LogoutButton /> {/* No vayas a borrar esta madre Polito, pq si no mama..... es Para poder cerrar sesion y no mame el token*/}
+        <p>Has iniciado sesión correctamente</p>
       </div>
     );
   }
   
-  export default WelcomePage;
