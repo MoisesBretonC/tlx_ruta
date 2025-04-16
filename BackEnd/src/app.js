@@ -5,15 +5,21 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs'; // <-- Añade
 
 // Configuración de paths absolutos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const uploadsDir = path.join(__dirname, '../uploadS');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 // Carga de variables de entorno
 const envPath = path.resolve(__dirname, '../.env'); // Cambiado a ../.env
 dotenv.config({ path: envPath });
 
 console.log('✅ Configuración cargada desde:', envPath);
+const incidentRoutes = (await import('./routes/incidentRoutes.js')).default;
 
 const app = express();
 
@@ -33,5 +39,6 @@ const tasksRoutes = (await import('./routes/tasksRoutes.js')).default;
 // Rutas
 app.use('/api', authRoutes);
 app.use('/api', tasksRoutes);
+app.use('/api/incidents', incidentRoutes);
 
 export default app;

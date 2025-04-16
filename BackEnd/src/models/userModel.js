@@ -33,9 +33,15 @@
             enum:['concessionaire','monitor','operator'],
             default: 'concessionaire'
         },
+        
+        concessionaire: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+          }
     
     },{
         timestamps:true
     })
+
 
     export default mongoose.model('User', userSchema)
